@@ -8,6 +8,7 @@ const sPServer = express()
 sPServer.use(cors())
 sPServer.use(express.json())
 sPServer.use(router)
+sPServer.use('/uploads',express.static('./uploads'))
 
 const PORT = 3000 || process.env.PORT
 

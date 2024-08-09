@@ -28,15 +28,15 @@ exports.adminLoginController = async (req, res) => {
 exports.addStudentController = async (req, res) => {
     console.log("Inside AddStudentController");
     const { studId, studName, studCourse, studStatus } = req.body
-    console.log(studId, studName, studCourse, studStatus);
-
+    const studImage = req.file.filename
+    console.log(studImage,studId, studName, studCourse, studStatus);
     try {
         const existingStudent = await students.findOne({ studId })
         if (existingStudent) {
             res.status(406).json("Student already exist")
         } else {
             const newStudent = new students({
-                studId, studName, studCourse, studStatus
+                studImage, studId, studName, studCourse, studStatus
             })
             await newStudent.save()
             res.status(200).json(newStudent)
@@ -72,13 +72,15 @@ exports.getAStudentController = async (req, res) => {
 // update student
 exports.updateAStudentController = async (req, res) => {
     console.log("Inside updateAStudentController");
-    const { studId, studName, studCourse, studStatus } = req.body
-    console.log(studId, studName, studCourse, studStatus);
-
+    const { studImage, studId, studName, studCourse, studStatus } = req.body
+    const updatedImage = req.file ? req.file.filename : studImage
+    console.log(studId, studName, studCourse, studStatus, updatedImage);
     try {
+        console.log(req.params);
+        
         const { id } = req.params
         console.log(id);
-        const updatedStudent = await students.findOneAndUpdate({studId:id }, { studId, studName, studCourse, studStatus }, { new: true })
+        const updatedStudent = await students.findOneAndUpdate({studId:id }, { studImage:updatedImage, studId, studName, studCourse, studStatus }, { new: true })
         console.log(updatedStudent);
         await updatedStudent.save()
         res.status(200).json(updatedStudent)

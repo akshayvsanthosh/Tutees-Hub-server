@@ -1,6 +1,7 @@
 const express = require('express')
 const studentController = require('../Controllers/studentController')
 const jwtMiddleware = require('../Middlewares/jwtMiddleware')
+const multerMiddleware = require('../Middlewares/multerMiddleware')
 
 const router = new express.Router()
 
@@ -8,7 +9,7 @@ const router = new express.Router()
 router.post('/login',studentController.adminLoginController)
 
 // add student
-router.post('/addStudent',jwtMiddleware,studentController.addStudentController)
+router.post('/addStudent',jwtMiddleware,multerMiddleware.single('studImage'),studentController.addStudentController)
 
 // get students
 router.get('/allStudents',jwtMiddleware,studentController.getStudentsController)
@@ -17,7 +18,7 @@ router.get('/allStudents',jwtMiddleware,studentController.getStudentsController)
 router.get('/:id/student',jwtMiddleware,studentController.getAStudentController)
 
 // update student
-router.put('/:id/updateStudent',jwtMiddleware,studentController.updateAStudentController)
+router.put('/:id/updateStudent',multerMiddleware.single('studImage'),jwtMiddleware,studentController.updateAStudentController)
 
 // update student
 router.delete('/:id/deleteStudent',jwtMiddleware,studentController.deleteAStudentController)

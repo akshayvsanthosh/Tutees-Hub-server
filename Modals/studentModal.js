@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const studentSchema = new mongoose.Schema({
+    studImage:{
+        type:String,
+        required:true
+    },
     studId:{
         type:String,
         required:true,
